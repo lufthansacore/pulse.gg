@@ -4,11 +4,15 @@ import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 import { Auth } from "../components/Auth"
+import Link from 'next/link'
+import { useRouter } from 'next/router';
+import ApplicationForm from '../components/ApplicationForm';
 
 export default function PulseGG() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
+  const router = useRouter();
 
   useEffect(() => {
     if (darkMode) {
@@ -29,6 +33,13 @@ export default function PulseGG() {
     // Implement change profile picture logic here
     console.log("Change profile picture")
   }
+
+  const verifiedGroups = [
+    "CCNY Mela Mahem",
+    "CCNY MSA",
+    "CCNY MSOWII",
+    "CCNY BSA"
+  ]
 
   return (
     <div className={`flex flex-col min-h-screen ${darkMode ? 'dark' : ''}`}>
@@ -105,13 +116,23 @@ export default function PulseGG() {
           </p>
           <h2 className="text-3xl font-bold mb-6 text-white animate-fade-in delay-600">Verified Groups</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            {["CCNY Mela Mahem", "CCNY MSA", "CCNY MSOWII", "CCNY BSA"].map((group, index) => (
-              <Badge key={group} variant="secondary" className={`justify-center text-sm py-2 animate-slide-in delay-${(index + 4) * 200}`}>
-                <CheckCircle className="w-4 h-4 mr-2" /> {group}
-              </Badge>
+            {verifiedGroups.map((group, index) => (
+              <Link href={`/group/${encodeURIComponent(group)}`} key={group}>
+                <Button
+                  className={`w-full justify-center text-sm py-2 animate-slide-in delay-${(index + 4) * 200} 
+                              bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-300`}
+                >
+                  <CheckCircle className="w-4 h-4 mr-2" /> {group}
+                </Button>
+              </Link>
             ))}
           </div>
-          <Button className="animate-slide-in delay-1400 bg-indigo-600 hover:bg-indigo-700 text-white">Apply for Verification</Button>
+          <Button 
+            onClick={() => router.push('/apply-for-verification')} 
+            className="animate-slide-in delay-1400 bg-indigo-600 hover:bg-indigo-700 text-white"
+          >
+            Apply for Verification
+          </Button>
         </div>
 
         <div className="md:w-2/5">
